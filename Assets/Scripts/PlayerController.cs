@@ -16,7 +16,16 @@ public class PlayerController : MonoBehaviour {
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
-        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+        if (rb.velocity.x > 10 || rb.velocity.x < -10)
+        {
+            moveHorizontal = 0;
+        }
+        if(rb.velocity.z > 10 || rb.velocity.z < -10)
+        {
+            moveVertical = 0;
+        }
+            Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
         rb.AddForce(movement * speed);
+        print("velocity :"+rb.velocity.x+" "+ rb.velocity.y+" "+ rb.velocity.z);
     }
 }
