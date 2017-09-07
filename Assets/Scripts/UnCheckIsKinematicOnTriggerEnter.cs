@@ -14,8 +14,7 @@ public class UnCheckIsKinematicOnTriggerEnter : MonoBehaviour
 		
 	}
 
-	public void OnTriggerEnter (Collider col)
-	{
+	public void OnTriggerEnter (Collider col){
 		if (targetRigidbody) {
 			targetRigidbody.isKinematic = false;
 			targetRigidbody.WakeUp ();

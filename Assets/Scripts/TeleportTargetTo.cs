@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+
+// Permet de teleport l'element entrant dans un trigger à un autre endroit prédéfini
 public class TeleportTargetTo : MonoBehaviour
 {
 

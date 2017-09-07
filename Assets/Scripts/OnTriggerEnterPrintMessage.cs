@@ -10,6 +10,8 @@ public class OnTriggerEnterPrintMessage : MonoBehaviour
 	public int height;
 	private bool printingMessage = false;
 
+
+	// Affiche un message quand on rentre dans le trigger
 	public void OnGUI ()
 	{
 		if (printingMessage) {

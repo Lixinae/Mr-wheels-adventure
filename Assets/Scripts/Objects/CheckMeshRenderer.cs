@@ -11,16 +11,12 @@ public class CheckMeshRenderer : MonoBehaviour {
             Debug.DrawLine(this.transform.position, target_obj.transform.position, Color.yellow);
     }
 
-    public void OnTriggerEnter(Collider col)
-    {
-        if (target_obj != null)
-        {
+	// Affiche l'objet quand on rentre dans le trigger
+    public void OnTriggerEnter(Collider col){
+        if (target_obj != null){
             if (!target_obj.GetComponent<Renderer>().enabled) {
-                
                 target_obj.GetComponent<Renderer>().enabled = true;
-               
             }
-            //target_obj.WakeUp();
         }
     }
 }
