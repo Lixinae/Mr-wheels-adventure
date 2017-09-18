@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour {
     void Start()
     {
         _hasJumped = false;
-        _isGrounded = true;
+        _isGrounded = false;
 
         _rigidbody = GetComponent<Rigidbody>();
     }
@@ -45,7 +45,7 @@ public class PlayerController : MonoBehaviour {
         {
             _rigidbody.AddForce(Vector3.up * _jumpSpeed, ForceMode.VelocityChange);
             _hasJumped = false;
-            _isGrounded = true;
+            _isGrounded = false;
         }
 
         //mouvement horizontal
@@ -72,6 +72,6 @@ public class PlayerController : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
-        _isGrounded = false;
+        _isGrounded = true;
     }
 }
