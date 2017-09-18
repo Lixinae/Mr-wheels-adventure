@@ -7,48 +7,46 @@ public class PlayerController : MonoBehaviour {
 
     //saut
     [SerializeField]
-    private Transform _transform;
-
-    [SerializeField]
     private float _jumpSpeed;
 
+    private bool _hasJumped;
+
+    private bool _isGrounded;
+
+    //mouvement
     [SerializeField]
     private Rigidbody _rigidbody;
 
-    private float _feetRadius;
-
-    private RaycastHit _hit;
-
-    private bool _canJump = true;
-
-    //mouvement
     public float speed;
 
 
 
     void Start()
     {
+        _hasJumped = false;
+        _isGrounded = true;
+
         _rigidbody = GetComponent<Rigidbody>();
-        _feetRadius = GetComponent<SphereCollider>().radius;
+    }
+
+    void Update()
+    {
+        _hasJumped = false;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            _hasJumped = true;
+        }
     }
 
     void FixedUpdate()
     {
         //saut
-        //print("test "+_canJump +" " + Input.GetAxis("Jump") + " " + _transform.position +" \n");
-        print(Physics.SphereCast(_transform.position + Vector3.up * _feetRadius * 1.1f, _feetRadius, Vector3.down, out _hit, 0.1f));
-        //print(_transform.position + Vector3.up * _feetRadius * 1.1f +" "+ _transform.position);
-        if (!_canJump && Input.GetAxis("Jump") == 0)
+        if(_hasJumped && !_isGrounded)
         {
-            _canJump = true;
-        }
-        if (_canJump && Input.GetAxis("Jump") > 0 && Physics.SphereCast(_transform.position + Vector3.up * _feetRadius * 1.1f, _feetRadius, Vector3.down, out _hit, 0.1f))
-        {
-            print("test2\n");
             _rigidbody.AddForce(Vector3.up * _jumpSpeed, ForceMode.VelocityChange);
-            _canJump = false;
+            _hasJumped = false;
+            _isGrounded = true;
         }
-
 
         //mouvement horizontal
 
@@ -70,6 +68,10 @@ public class PlayerController : MonoBehaviour {
 		Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
         _rigidbody.AddForce(movement * speed);
 		//print("velocity :"+rb.velocity.x+" "+ rb.velocity.y+" "+ rb.velocity.z);  
+    }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        _isGrounded = false;
     }
 }
