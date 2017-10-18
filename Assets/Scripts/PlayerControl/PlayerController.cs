@@ -19,6 +19,9 @@ public class PlayerController : MonoBehaviour {
 
     public float speed;
 
+    //boost
+    private Vector3 _boost = Vector3.zero;
+    private bool stuck = false;
 
 
     void Start()
@@ -31,24 +34,47 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
+
         _hasJumped = false;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             _hasJumped = true;
         }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            _rigidbody.velocity = Vector3.zero;
+            stuck = true;
+        }
+        if (Input.GetKey(KeyCode.X))
+        {
+            _boost.x += Input.GetAxis("Horizontal");
+            _boost.z += Input.GetAxis("Vertical");
+        }
+        if (Input.GetKeyUp(KeyCode.X))
+        {
+            _rigidbody.AddForce(_boost * speed);
+            _boost = Vector3.zero;
+            stuck = false;
+        }
     }
 
     void FixedUpdate()
     {
-        //saut
-        if(_hasJumped && !_isGrounded)
+        if (stuck)
         {
+            return;
+        }
+        //saut
+        if (_hasJumped && _isGrounded)
+        {
+            print("enter");
             _rigidbody.AddForce(Vector3.up * _jumpSpeed, ForceMode.VelocityChange);
             _hasJumped = false;
             _isGrounded = false;
         }
 
-        //mouvement horizontal
+        //mouvement plat
 
         float moveHorizontal = Input.GetAxis("Horizontal");
         float moveVertical = Input.GetAxis("Vertical");
@@ -67,7 +93,7 @@ public class PlayerController : MonoBehaviour {
 
 		Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
         _rigidbody.AddForce(movement * speed);
-		//print("velocity :"+rb.velocity.x+" "+ rb.velocity.y+" "+ rb.velocity.z);  
+        //print("velocity :"+_rigidbody.velocity.x+" "+ _rigidbody.velocity.y+" "+ _rigidbody.velocity.z);  
     }
 
     void OnCollisionEnter(Collision collision)
