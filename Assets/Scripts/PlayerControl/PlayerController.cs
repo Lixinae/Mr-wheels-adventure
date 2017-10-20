@@ -28,19 +28,19 @@ public class PlayerController : MonoBehaviour {
     {
         _hasJumped = false;
         _isGrounded = false;
-
         _rigidbody = GetComponent<Rigidbody>();
     }
 
     void Update()
     {
-
+        //jump
         _hasJumped = false;
         if (Input.GetKeyDown(KeyCode.Space))
         {
             _hasJumped = true;
         }
 
+        //arret du perso + boost au maintien
         if (Input.GetKeyDown(KeyCode.X))
         {
             _rigidbody.velocity = Vector3.zero;
@@ -48,6 +48,7 @@ public class PlayerController : MonoBehaviour {
         }
         if (Input.GetKey(KeyCode.X))
         {
+            _rigidbody.velocity = Vector3.zero;
             _boost.x += Input.GetAxis("Horizontal");
             _boost.z += Input.GetAxis("Vertical");
         }
@@ -61,43 +62,53 @@ public class PlayerController : MonoBehaviour {
 
     void FixedUpdate()
     {
+        //arret du perso
         if (stuck)
         {
             return;
         }
+
         //saut
         if (_hasJumped && _isGrounded)
         {
-            print("enter");
             _rigidbody.AddForce(Vector3.up * _jumpSpeed, ForceMode.VelocityChange);
             _hasJumped = false;
             _isGrounded = false;
         }
 
-        //mouvement plat
+        //mouvement fleche directionnel
+        move_directional();
 
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
-
-		// Limite de vitesse sur l'axe X
-        if (_rigidbody.velocity.x > 10 || _rigidbody.velocity.x < -10)
-        {
-            moveHorizontal = 0;
-        }
-
-		// Limite de vitesse sur l'axe Z
-        if(_rigidbody.velocity.z > 10 || _rigidbody.velocity.z < -10)
-        {
-            moveVertical = 0;
-        }
-
-		Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
-        _rigidbody.AddForce(movement * speed);
-        //print("velocity :"+_rigidbody.velocity.x+" "+ _rigidbody.velocity.y+" "+ _rigidbody.velocity.z);  
+        //mouvement camera en fonction souris
     }
 
     void OnCollisionEnter(Collision collision)
     {
         _isGrounded = true;
     }
+
+    //mouvement plat
+    private void move_directional()
+    {
+
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
+
+        // Limite de vitesse sur l'axe X
+        if (_rigidbody.velocity.x > 10 || _rigidbody.velocity.x < -10)
+        {
+            moveHorizontal = 0;
+        }
+
+        // Limite de vitesse sur l'axe Z
+        if (_rigidbody.velocity.z > 10 || _rigidbody.velocity.z < -10)
+        {
+            moveVertical = 0;
+        }
+
+        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+        _rigidbody.AddForce(movement * speed);
+        //print("velocity :"+_rigidbody.velocity.x+" "+ _rigidbody.velocity.y+" "+ _rigidbody.velocity.z);  
+    }
+
 }

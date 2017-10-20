@@ -32,5 +32,7 @@ public class JumpScript_new : MonoBehaviour
 			_rigidbody.AddForce (Vector3.up * _jumpSpeed, ForceMode.VelocityChange);
 			_canJump = false;
 		}
+        //pour eviter le warning
+        print(_hit);
 	}
 }
