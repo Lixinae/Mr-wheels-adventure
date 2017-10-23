@@ -5,10 +5,8 @@ public class Character_data : MonoBehaviour
 {
 
 	[SerializeField]private GameObject player;
-	private int countDeath = 0;
-
 	public Vector3 currentCheckPoint;
-
+	private bool isAlive = true;
 
 	// Use this for initialization
 	void Start ()
@@ -19,39 +17,35 @@ public class Character_data : MonoBehaviour
 	}
 
 	// Update is called once per frame
-	void Update ()
-	{
-		
-		// if the player goes below -7 == he dies -> resest the position & rotation to the beginning
+	void Update ()	{
 		if (isdead ()) {
 			ResetPlayer ();
-			countDeath++;
+			isAlive = true;
 		}
 
 	}
 
-	public bool isdead ()
-	{
-		Vector3 playerCurrentPos;
-		// get the current position of the player
-		playerCurrentPos = player.transform.localPosition;
-		return playerCurrentPos.y <= -7;
+	// Check if the player is alive or not
+	public bool isdead (){
+		return isAlive;
 	}
 
+	// Kills the player
+	public void kill(){
+		isAlive = false;
+	}
 
-	void ResetPlayer ()
-	{
+	void ResetPlayer ()	{
 		player.transform.localPosition = currentCheckPoint;
 	}
-
-	void OnGUI ()
-	{
+	/*
+	void OnGUI ()	{
 		DisplayNumberOfDeaths ();
 	}
 
-	void DisplayNumberOfDeaths ()
-	{
+	void DisplayNumberOfDeaths ()	{
 		string s = "Deaths : ";
-		GUI.Box (new Rect (10, 50, s.Length + 70, 22), s + countDeath);
+		GUI.Box (new Rect (10, 50, s.Length + 70, 22), s + );
 	}
+	*/
 }

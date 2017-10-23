@@ -14,11 +14,12 @@ public class PatrolPlatforme : MonoBehaviour{
 	[SerializeField]private float loopTime;
 
 	void Start (){
-		ChangeTarget ();
+		//ChangeTarget ();
 	}
 
 	void FixedUpdate ()	{
-		movingPlatform.position = Vector3.Lerp (movingPlatform.position, newPosition, speed * Time.deltaTime);
+		//movingPlatform.position = Vector3.Lerp (movingPlatform.position, newPosition, speed * Time.deltaTime);
+		movingPlatform.position = new Vector3(Mathf.PingPong(Time.time, 0.5F), movingPlatform.position.y, movingPlatform.position.z);
 	}
 
 	void ChangeTarget (){
@@ -37,9 +38,9 @@ public class PatrolPlatforme : MonoBehaviour{
 	public void OnDrawGizmos ()	{
 		for (int i = 0; i < positions.Length; i++) {
 			if (i + 1 == positions.Length) {
-				Debug.DrawLine (positions [i].position, positions [0].position, Color.blue);
+				Debug.DrawLine (positions[i].position, positions[0].position, Color.blue);
 			} else {
-				Debug.DrawLine (positions [i].position, positions [i + 1].position, Color.blue);
+				Debug.DrawLine (positions[i].position, positions[i + 1].position, Color.blue);
 			}
           
 		}
