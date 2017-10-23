@@ -28,9 +28,10 @@ public class CameraController : MonoBehaviour {
         {
             Vector3 mpDiff = mp - mouseWorldPosition;
             float angle = mpDiff.x;
-            //prendre le cote adjacent et l'hypothenus comme valeur pour deplacer, 
-            //prendre le vecteur offset comme direction pour la premiere et le vecteur perpendiculaire pour la deuxieme
-            //transform.position += new Vector3(1,0,1);
+            Quaternion rotation = Quaternion.Euler(0, angle, 0);
+            Vector3 pos = rotation * offset + player.transform.position;
+            transform.rotation = rotation;
+            transform.position = pos;
         }
         transform.LookAt(player.transform.position);
         offset = transform.position - player.transform.position;

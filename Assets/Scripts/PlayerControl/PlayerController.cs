@@ -19,6 +19,12 @@ public class PlayerController : MonoBehaviour {
 
     public float speed;
 
+    //mouvement en fonction de la direction de la camera
+    [SerializeField]
+    private GameObject Camera;
+
+    private Vector3 offset;
+
     //boost
     private Vector3 _boost = Vector3.zero;
     private bool stuck = false;
@@ -29,6 +35,9 @@ public class PlayerController : MonoBehaviour {
         _hasJumped = false;
         _isGrounded = false;
         _rigidbody = GetComponent<Rigidbody>();
+        offset = Camera.transform.position - transform.position;
+        print(offset)
+            ;
     }
 
     void Update()
@@ -58,6 +67,9 @@ public class PlayerController : MonoBehaviour {
             _boost = Vector3.zero;
             stuck = false;
         }
+
+
+        offset = Camera.transform.position - transform.position;
     }
 
     void FixedUpdate()
@@ -78,8 +90,6 @@ public class PlayerController : MonoBehaviour {
 
         //mouvement fleche directionnel
         move_directional();
-
-        //mouvement camera en fonction souris
     }
 
     void OnCollisionEnter(Collision collision)
@@ -90,8 +100,9 @@ public class PlayerController : MonoBehaviour {
     //mouvement plat
     private void move_directional()
     {
-
+        //gauche droite
         float moveHorizontal = Input.GetAxis("Horizontal");
+        //avant arrière
         float moveVertical = Input.GetAxis("Vertical");
 
         // Limite de vitesse sur l'axe X
@@ -106,9 +117,10 @@ public class PlayerController : MonoBehaviour {
             moveVertical = 0;
         }
 
-        Vector3 movement = new Vector3(moveHorizontal, 0, moveVertical);
+        float dist_cam_player = Mathf.Sqrt((offset.y * offset.y) + (Mathf.Sqrt(offset.x * offset.x + offset.z * offset.z)));
+        Vector3 movement = new Vector3(((-offset.x) * (moveVertical + moveHorizontal)) / dist_cam_player, 0, ((-offset.z) * moveVertical) / dist_cam_player);
+
         _rigidbody.AddForce(movement * speed);
-        //print("velocity :"+_rigidbody.velocity.x+" "+ _rigidbody.velocity.y+" "+ _rigidbody.velocity.z);  
     }
 
 }
