@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     public GameObject player;
+
     private Vector3 offset;
 
     private Vector3 mouseWorldPosition;
@@ -24,7 +25,9 @@ public class CameraController : MonoBehaviour {
     private void Turn()
     {
         Vector3 mp = Input.mousePosition;
-        if(mp != mouseWorldPosition)
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.None;
+        if (mp != mouseWorldPosition)
         {
             Vector3 mpDiff = mp - mouseWorldPosition;
             float angle = mpDiff.x;
@@ -32,10 +35,10 @@ public class CameraController : MonoBehaviour {
             Vector3 pos = rotation * offset + player.transform.position;
             transform.rotation = rotation;
             transform.position = pos;
+            transform.LookAt(player.transform.position);
         }
-        transform.LookAt(player.transform.position);
         offset = transform.position - player.transform.position;
-        mouseWorldPosition = mp;
+        mouseWorldPosition = Input.mousePosition;
     }
 
 }

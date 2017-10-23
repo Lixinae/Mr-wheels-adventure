@@ -36,8 +36,6 @@ public class PlayerController : MonoBehaviour {
         _isGrounded = false;
         _rigidbody = GetComponent<Rigidbody>();
         offset = Camera.transform.position - transform.position;
-        print(offset)
-            ;
     }
 
     void Update()
